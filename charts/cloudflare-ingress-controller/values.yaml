@@ -1,0 +1,84 @@
+# Default values for cloudflare-ingress-controller.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: soli0222/cloudflare-ingress-controller # Replace with your actual repository
+  tag: "1.0.0" # Consider using a specific version/git sha
+  pullPolicy: IfNotPresent
+
+# Configuration for the controller
+config:
+  # The Cloudflare Tunnel ID. This is required.
+  tunnelID: "" # Example: "your-tunnel-uuid"
+
+# Create and configure the ServiceAccount
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # Annotations to add to the service account
+  annotations: {}
+
+# Create RBAC resources (Role, RoleBinding)
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+
+# Pod resource requests and limits
+# Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Annotations to add to the deployment
+podAnnotations: {}
+
+# Security context for the pod
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# Security context for the container
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# Node selector for pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+# Tolerations for pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+# Affinity for pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+# IngressClass resource configuration
+ingressClass:
+  # Specifies whether an IngressClass resource should be created
+  create: true
+  # Name of the IngressClass resource
+  name: cloudflare
+  # Annotations to add to the IngressClass
+  annotations: {}
+  # Set this to true if this IngressClass should be the default for the cluster
+  isDefaultClass: false

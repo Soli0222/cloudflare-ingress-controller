@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflare-ingress-controller-config
+  namespace: {{ .Release.Namespace }}
+data:
+  TUNNEL_ID: {{ .Values.config.tunnelID | quote }}

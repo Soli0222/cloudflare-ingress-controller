@@ -1,0 +1,34 @@
+Cloudflare Ingress Controller has been installed.
+
+It will watch for Ingress resources with the IngressClass "{{ .Values.ingressClass.name }}" and update their status with the hostname based on the Tunnel ID "{{ .Values.config.tunnelID }}".
+
+To verify the controller is running, check the deployment status:
+  kubectl get deployment -n {{ .Release.Namespace }} {{ include "cloudflare-ingress-controller.fullname" . }}
+
+To check the logs:
+  kubectl logs -n {{ .Release.Namespace }} -l {{ include "cloudflare-ingress-controller.selectorLabels" . | nospace }}
+
+Example Ingress using this controller:
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  namespace: default # Or the namespace of your service
+spec:
+  ingressClassName: {{ .Values.ingressClass.name }}
+  rules:
+  - host: my-app.example.com # This host is used for routing within Cloudflare Tunnel
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-app-service
+            port:
+              number: 80
+
+After creating an Ingress like the example above, the controller should update its status:
+  kubectl get ingress my-app-ingress -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+The expected hostname will be: {{ .Values.config.tunnelID }}.cfargotunnel.com

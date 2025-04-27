@@ -1,0 +1,36 @@
+{{- if .Values.rbac.create -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cloudflare-ingress-controller.fullname" . }}
+  labels:
+    {{- include "cloudflare-ingress-controller.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingressclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "cloudflare-ingress-controller.fullname" . }}
+  labels:
+    {{- include "cloudflare-ingress-controller.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "cloudflare-ingress-controller.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }} # ServiceAccount is still namespaced
+roleRef:
+  kind: ClusterRole
+  name: {{ include "cloudflare-ingress-controller.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end -}}

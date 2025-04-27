@@ -1,0 +1,12 @@
+apiVersion: v2
+name: cloudflare-ingress-controller
+description: A Kubernetes custom controller that automatically injects status.loadBalancer.ingress.hostname for Ingress resources with spec.ingressClassName set to "cloudflare".
+# A chart can be either an 'application' or a 'library' chart.
+# Application charts are charts that can be installed.
+type: application
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+version: 1.0.0 # Increment version due to changes
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: "1.0.0-beta.3" # Use the actual app version or git commit SHA

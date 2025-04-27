@@ -1,0 +1,17 @@
+{{- if .Values.ingressClass.create -}}
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: {{ .Values.ingressClass.name }}
+  labels:
+    {{- include "cloudflare-ingress-controller.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.ingressClass.isDefaultClass }}
+    ingressclass.kubernetes.io/is-default-class: "true"
+    {{- end }}
+    {{- with .Values.ingressClass.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  controller: soli0222.com/cloudflare-ingress-controller
+{{- end -}}
