@@ -6,7 +6,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  repository: soli0222/cloudflare-ingress-controller # Replace with your actual repository
+  repository: ghcr.io/soli0222/cloudflare-ingress-controller # Replace with your actual repository
   tag: "1.0.0" # Consider using a specific version/git sha
   pullPolicy: IfNotPresent
 
