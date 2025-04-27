@@ -26,7 +26,7 @@ To install the Cloudflare Ingress Controller, you can use Helm. First, ensure yo
 1. Clone the repository:
 
    ```
-   git clone <repository-url>
+   git clone https://github.com/Soli0222/cloudflare-ingress-controller.git
    cd cloudflare-ingress-controller
    ```
 
